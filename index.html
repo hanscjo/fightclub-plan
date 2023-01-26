@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treningsplan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="app"></div>
+    
+    <script>
+        //model
+        let programClass = '';
+
+        let day = null;
+        const workoutProgram = ['<h3>Mandag - Bryst:</h3><ul><li><b>Armhevinger</b> - Tre sett med 25 repetisjoner</li><li><b>Benkpress</b> - 25/75kg, 15/90kg og 8/100kg</li><li><b>Nautilus-press</b> - 15 repetisjoner med 35kg/45kg/60kg</li><li><b>Skråbenkpress</b> - 15 repetisjoner med 35kg/45kg/60kg</li><li><b>Pec deck</b> - 15 repetisjoner med 25kg/30kg/35kg</li></ul>', 
+        '<h3>Tirsdag - Rygg:</h3><ul><li><b>Pull-ups</b> - Tre sett til utmattelse</li><li><b>Sittende roing</b> - Tre sett med 34kg/36kg/38kg</li><li><b>Nedtrekk foran</b> - Tre sett med 60kg/70kg/75kg</li><li><b>T-stang roing</b> - Tre sett med 35kg/43kg/50kg</li></ul>', 
+        '<h3>Onsdag - Skuldre:</h3><ul><li><b>Arnold-press</b> - Tre sett med 25kg</li><li><b>Sidehev</b> - Tre sett med 15kg</li><li><b>Fronthev</b> - Tre sett med 10kg</li></ul>', 
+        '<h3>Torsdag - Biceps og triceps:</h3><ul><li><b>Preacher-curls</b> - Tre sett med 25kg/35kg/45kg</li><li><b>EZ-curls kabel</b> - Tre sett med 20kg/30kg/35kg</li><li><b>Hammer-curls</b> - Tre sett med 15kg/20kg/25kg</li><li><b>Nedpress</b> - Tre sett med 30kg/40kg/45kg</li></ul>', 
+        '<h3>Fredag - Cardio:</h3><ul><li><b>Løping</b> - En time med 80-90% puls</li></ul>', 
+        '<h3>Lørdag - Cardio:</h3><ul><li><b>Løping</b> - En time med 80-90% puls</li></ul>', 
+        '<h3>Søndag - Hviledag</h3><ul><li><b>Hvil deg</b> - Mer trening hjelper ikke</li></ul>']; //Denne er hardkodet siden jeg orker ikke sette opp database inntil videre
+        let workoutClass = '';
+
+        let dietVisible = 0;
+        let dietVisibleButtonText = 'Se matinntak...';
+        const diet = ['', '<h3>Frokost:</h3><p>Seks egg og 75g havregryn med rosiner. Dersom Pitt hadde dårlig tid, erstattet han eggene med en proteinshake.</p><h3>Morgensnacks:</h3><p>En boks tunfisk i pitabrød.</p><h3>Lunsj:</h3><p>To kyllingbryst, 75-100g brun ris eller pasta, og grønne grønnsaker.</p><h3>Før trening:</h3><p>En banan og en proteinbar eller en whey proteinshake.</p><h3>Etter trening:</h3><p>En whey protein shake og en banan.</p><h3>Middag:</h3><p>Grilla fisk eller kylling, brun ris eller pasta, grønnsaker og salat.</p><h3>Kveldssnacks:</h3><p>Protein shake eller mager cottage cheese(langsomme proteiner).</p>'];
+        let dietClass = '';
+
+        //view
+        view();
+        function view() { /*HTML*/ //<-- dersom du vil få innerhtml stringen til å se ut som HTML
+            let html = /*HTML*/`
+            <h1>Velkommen til Fight Club guiden!</h1>
+            <h2>Se treningsprogram...</h2>
+            <table>
+                <tr>
+                    <th onclick=selectDay(0)>Mandag</th>
+                    <th onclick=selectDay(1)>Tirsdag</th>
+                    <th onclick=selectDay(2)>Onsdag</th>
+                    <th onclick=selectDay(3)>Torsdag</th>
+                    <th onclick=selectDay(4)>Fredag</th>
+                    <th onclick=selectDay(5)>Lørdag</th>
+                    <th onclick=selectDay(6)>Søndag</th>
+                </tr>    
+            </table>
+            <br>
+            <button onclick="seeDiet()">${dietVisibleButtonText}</button>
+            <div ${programClass}>
+            `;
+            
+
+            day != null ? 
+            html += `<div id="workoutElement" ${workoutClass}'><p>${workoutProgram[day]}</p></div>` :
+            html += ``;
+            
+            html += `<div id="dietElement" ${dietClass}>${diet[dietVisible]}</div>`;
+
+            html += `</div>`; //div programClass
+            document.getElementById('app').innerHTML = html;
+        }
+
+        //controller
+        function selectDay(dayOfTheWeek) {
+            if (day == dayOfTheWeek) {
+                day = null;
+                setSoloClass('dietElement');
+            }
+            else {
+                setGroupedClasses();
+                day = dayOfTheWeek;
+
+                if (dietVisible == 0) {
+                setSoloClass('workoutElement');
+                }
+            }
+            view();
+        }
+
+        function seeDiet() {
+            setGroupedClasses();
+            dietVisible = 1 - dietVisible; //alternerer verdi hver gang funksjonen kalles
+
+            if (dietVisible == 1) {
+                dietVisibleButtonText = "Skjul matinntak...";
+                if (day == null) {
+                    setSoloClass('dietElement');
+                }
+            }
+
+            if (dietVisible == 0) {
+                dietVisibleButtonText = "Se matinntak...";
+                setSoloClass('workoutElement');
+            }
+            view();
+        }
+
+        function setSoloClass(elementId) {
+            if (elementId == 'dietElement') {
+                dietClass = 'class="solo"';
+            }
+            else {
+                workoutClass = 'class="solo"';
+            }
+            programClass = 'class="soloProgram"';
+        }
+
+        function setGroupedClasses() {
+            dietClass = 'class="diet"';
+            workoutClass = 'class="workout"';
+            programClass = 'class="fullProgram"'; //Må variere denne. Hvis vi kun bruker én layout som inkluderer workout+diet og solo+solo, så havner alltid solo+solo ett innrykk under selv om workout+diet ikke er synlig.
+        }
+
+    </script>
+</body>    
+</html>

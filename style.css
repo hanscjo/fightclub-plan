@@ -1,0 +1,59 @@
+#app {
+    text-align: center;
+    font-size: 24px;
+    height: 100vh;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, button {
+    border: 2px solid black;
+    padding: 10px;
+}
+
+th:hover, button:hover {
+    border: 2px solid red;
+    color: red;
+    cursor: pointer;
+}
+
+th:active, button:active {
+    border: 3px solid red;
+}
+
+div.fullProgram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'workout diet';
+}
+
+div.workout {
+    grid-area: workout;
+}
+
+div.diet {
+    grid-area: diet;
+}
+
+div.soloProgram { /*Dersom kun ett element vises, for å unngå ekstra linjeskift ved å ha typisk grid*/
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'solo solo';
+}
+
+div.solo {
+    grid-area: solo;
+}
+
+ul {
+    display: inline-block;
+    text-align: left;
+}
+
+li {
+    margin:6px;
+}
+
