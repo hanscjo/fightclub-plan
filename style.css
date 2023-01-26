@@ -12,6 +12,7 @@ table {
 th, button {
     border: 2px solid black;
     padding: 10px;
+    max-width: 12%;
 }
 
 th:hover, button:hover {
